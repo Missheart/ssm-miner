@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class BaseController {
+
+    /***
+     * 接口返回数据
+     */
     @Autowired
     protected Data data;
 }

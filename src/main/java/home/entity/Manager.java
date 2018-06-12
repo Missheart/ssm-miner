@@ -16,6 +16,7 @@ public class Manager {
   private long enable;
   private long createTime;
   private long lastLoginTime;
+  private ManagerRole managerRole;
 
 
   public long getId() {
@@ -116,6 +117,14 @@ public class Manager {
     this.lastLoginTime = lastLoginTime;
   }
 
+  public ManagerRole getManagerRole() {
+    return managerRole;
+  }
+
+  public void setManagerRole(ManagerRole managerRole) {
+    this.managerRole = managerRole;
+  }
+
   @Override
   public String toString() {
     return "Manager{" +
@@ -130,6 +139,7 @@ public class Manager {
             ", enable=" + enable +
             ", createTime=" + createTime +
             ", lastLoginTime=" + lastLoginTime +
+            ", managerRole=" + managerRole +
             '}';
   }
 }

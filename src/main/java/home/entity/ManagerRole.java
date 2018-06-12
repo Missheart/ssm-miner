@@ -64,4 +64,15 @@ public class ManagerRole {
     this.updateTime = updateTime;
   }
 
+  @Override
+  public String toString() {
+    return "ManagerRole{" +
+            "id=" + id +
+            ", role='" + role + '\'' +
+            ", description='" + description + '\'' +
+            ", authAccess='" + authAccess + '\'' +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            '}';
+  }
 }

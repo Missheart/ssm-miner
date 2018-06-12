@@ -3,8 +3,12 @@
 
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="home.dao.ManagerMapper">
+    <resultMap id="managerByName" type="home.entity.Manager">
+        <id property="id" column="id"></id>
+        <result column="role" property="managerRole.role"></result>
+    </resultMap>
 
-    <select id="getManagerByName" resultType="Manager" parameterType="string">
-        SELECT * from manager  WHERE username=#{username}
+    <select id="getManagerByName" resultMap="managerByName">
+        SELECT manager.*, manager_role.role, manager_role.auth_access from manager, manager_role  WHERE manager.username=#{username} AND manager_role.id=manager.role_id
     </select>
 </mapper>
