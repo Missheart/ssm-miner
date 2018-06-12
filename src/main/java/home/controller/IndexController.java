@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/index")
 public class IndexController {
 
-//    @Login
+    @Login
     @ApiOperation("首页")
     @GetMapping("/index")
     public String index(){

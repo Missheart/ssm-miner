@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 
 /**
  * 〈一句话功能简述〉<br> 
- * 〈判断管理员登陆权限〉
+ * 〈自定义注解--用户登录〉
  *
  * @author Administrator
  * @create 2018/6/12

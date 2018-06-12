@@ -11,6 +11,9 @@
 package home.Aspectj;
 
 import home.entity.Manager;
+import home.utils.MyException;
+import javafx.application.Application;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -29,7 +32,7 @@ import java.lang.reflect.Method;
 
 /**
  * 〈一句话功能简述〉<br> 
- * 〈〉
+ * 〈自定义用户登录验证切面〉
  *
  * @author Administrator
  * @create 2018/6/12
@@ -38,15 +41,16 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class LoginHandle {
+    private HttpServletRequest request;
     private static final String NEED_LOGIN = "请先登录";
 
-//    @Pointcut(value = "execution(public * home.controller.*.*(..))")
+    @Pointcut(value = "execution(public * home.controller.*.*(..))")
     public void start(){
     }
 
-//    @Before("start()")
-    public boolean access(ProceedingJoinPoint joinPoint){
-        /*Manager manager = getManager();
+    @Before("start()")
+    public void access(JoinPoint joinPoint) throws Exception{
+        Manager manager = getManager();
         MethodSignature joinPointObject = (MethodSignature) joinPoint.getSignature();
         //获得请求的方法
         Method method = joinPointObject.getMethod();
@@ -54,11 +58,9 @@ public class LoginHandle {
         if (hasAnnotationOnMethod(method,Login.class)){
             if (manager == null){
                 //用户未登录
-                System.out.println("用户未登陆");
-                return false;
+                throw new MyException("用户未登录");
             }
-        }*/
-        return true;
+        }
     }
 
     /**
@@ -68,7 +70,7 @@ public class LoginHandle {
     private Manager getManager(){
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-        HttpServletRequest request = servletRequestAttributes.getRequest();
+        request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
         Manager manager = (Manager) session.getAttribute("ManagerData");
         return manager;
