@@ -14,7 +14,7 @@ import home.dao.ManagerMapper;
 import home.entity.Manager;
 import home.service.ManagerService;
 import home.utils.CommonFunction;
-import home.utils.SessionUtis;
+import home.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class ManagerServiceimpl implements ManagerService {
     private ManagerMapper managerMapper;
 
     @Autowired
-    private SessionUtis SessionUtis;
+    private SessionUtils sessionUtils;
 
     @Override
     public boolean login(String username, String password) {
@@ -47,7 +47,7 @@ public class ManagerServiceimpl implements ManagerService {
             return false;
 
         //设置session
-        boolean set = SessionUtis.setSession("managerData", manager);
+        boolean set = sessionUtils.setSession("managerData", manager);
         if( set == false )
             return false;
 
@@ -57,5 +57,11 @@ public class ManagerServiceimpl implements ManagerService {
     @Override
     public Manager getManagerByName(String username) {
         return managerMapper.getManagerByName(username);
+    }
+
+    @Override
+    public boolean logout() {
+        sessionUtils.unsetSession();
+        return true;
     }
 }

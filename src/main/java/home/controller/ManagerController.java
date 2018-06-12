@@ -11,20 +11,14 @@
 package home.controller;
 
 import home.entity.Data;
-import home.entity.Manager;
 import home.service.ManagerService;
-import home.utils.CommonFunction;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -43,10 +37,8 @@ public class ManagerController extends BaseController {
 
     @GetMapping("/login")
     @ApiOperation("管理员登陆界面")
-    public String login(
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse
-    ) throws Exception{
+    public String login() throws Exception
+    {
         System.out.println("用户登陆界面");
         return "manager/login";
     }
@@ -55,11 +47,11 @@ public class ManagerController extends BaseController {
     @ResponseBody
     @PostMapping(value = "/login")
     public Data login(
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse,
             @ApiParam(value = "管理员账号", required = true) @RequestParam("username") String username,
             @ApiParam(value = "管理员密码", required = false) @RequestParam("password") String password
-    ) throws Exception{
+    )
+        throws Exception
+    {
         if ( username != null && password != null ) {
             //登陆
             boolean res = managerService.login(username, password);
@@ -69,6 +61,19 @@ public class ManagerController extends BaseController {
             return data;
         }
         return data.setCode(1).setMsg("入参错误");
+
+    }
+
+    @ApiOperation("退出登陆")
+    @ResponseBody
+    @GetMapping("/logout")
+    public Data logout()
+    {
+        boolean logout = managerService.logout();
+        if( logout )
+            return data;
+        else
+            return data.setCode(1).setMsg("操作错误");
 
     }
 }

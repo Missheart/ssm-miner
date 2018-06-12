@@ -18,4 +18,10 @@ public interface ManagerService {
      */
     public boolean login(String username, String password);
 
+    /***
+     * 退出登陆
+     * @return
+     */
+    public boolean logout();
+
 }

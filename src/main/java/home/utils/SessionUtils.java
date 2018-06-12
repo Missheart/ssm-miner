@@ -10,11 +10,11 @@
  */
 package home.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -26,11 +26,16 @@ import javax.servlet.http.HttpSession;
  * @since 1.0.0
  */
 @Component
-public class SessionUtis {
-    @Autowired
+public class SessionUtils {
+
     private HttpServletRequest request;
-    @Autowired
+
     private HttpSession session;
+
+    public void setRequestSession(){
+        request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        session = request.getSession();
+    }
 
     /**
      * 获取session
@@ -38,6 +43,8 @@ public class SessionUtis {
      * @return
      */
     public Object getSession(String key){
+        setRequestSession();
+
         if (key == null)
             return null;
 
@@ -57,6 +64,7 @@ public class SessionUtis {
      * @return
      */
     public boolean setSession(String key, Object value){
+        setRequestSession();
         if (key == null)
             return false;
 
@@ -79,6 +87,7 @@ public class SessionUtis {
      * @return
      */
     public boolean setSessionExpire(Integer time){
+        setRequestSession();
         if( request == null )
             return false;
 
@@ -90,5 +99,22 @@ public class SessionUtis {
 
         session.setMaxInactiveInterval(time);
         return true;
+    }
+
+    /***
+     * 注销session
+     * @return
+     */
+    public boolean unsetSession(){
+        setRequestSession();
+        if( request == null )
+            return false;
+
+        if( session != null ){
+            session.invalidate();
+            return true;
+        }
+
+        return false;
     }
 }
