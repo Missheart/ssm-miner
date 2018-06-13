@@ -3,6 +3,7 @@ package home.utils;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,12 +14,20 @@ import java.io.IOException;
 public class CustomExceptionResolver implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
-        System.out.println(e.getMessage());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", e.getMessage());
         modelAndView.setViewName("/error");
+
+        String method = httpServletRequest.getMethod();
+        httpServletRequest.setAttribute("exception", e);
+        httpServletRequest.setAttribute("message", e.getMessage());
         try {
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/manager/login");
+            if( method.equals("GET") ){
+                httpServletRequest.getRequestDispatcher("/exception/getHandle").forward(httpServletRequest, httpServletResponse);
+            }else if( method.equals("POST") ){
+                httpServletRequest.getRequestDispatcher(httpServletRequest.getContextPath()+"/exception/postHandle").forward(httpServletRequest, httpServletResponse);
+            }
+        } catch (ServletException e1) {
+            e1.printStackTrace();
         } catch (IOException e1) {
             e1.printStackTrace();
         }

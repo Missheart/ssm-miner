@@ -11,11 +11,9 @@
 package home.Aspectj;
 
 import home.entity.Manager;
-import home.utils.MyException;
-import javafx.application.Application;
+import home.exception.LoginException;
+import home.exception.MyException;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -41,7 +39,6 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class LoginHandle {
-    private HttpServletRequest request;
     private static final String NEED_LOGIN = "请先登录";
 
     @Pointcut(value = "execution(public * home.controller.*.*(..))")
@@ -58,7 +55,7 @@ public class LoginHandle {
         if (hasAnnotationOnMethod(method,Login.class)){
             if (manager == null){
                 //用户未登录
-                throw new MyException("用户未登录");
+                throw new LoginException("用户未登录");
             }
         }
     }
@@ -70,9 +67,9 @@ public class LoginHandle {
     private Manager getManager(){
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-        request = servletRequestAttributes.getRequest();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
-        Manager manager = (Manager) session.getAttribute("ManagerData");
+        Manager manager = (Manager) session.getAttribute("managerData");
         return manager;
     }
 
