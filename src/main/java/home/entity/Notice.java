@@ -1,6 +1,8 @@
 package home.entity;
 
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class Notice {
 
   private long id;
@@ -74,4 +76,16 @@ public class Notice {
     this.updated = updated;
   }
 
+  @Override
+  public String toString() {
+    return "Notice{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", content='" + content + '\'' +
+            ", postDate=" + postDate +
+            ", contentStateValue=" + contentStateValue +
+            ", created=" + created +
+            ", updated=" + updated +
+            '}';
+  }
 }

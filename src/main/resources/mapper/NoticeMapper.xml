@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="home.dao.NoticeMapper">
+    <select id="getNoticeList" resultType="notice">
+        SELECT * FROM notice
+    </select>
+
+    <insert id="addNotice" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO notice (title, content, post_date, contentStateValue) VALUES (#{title}, #{content}, #{postDate}, #{contentStateValue})
+    </insert>
+</mapper>
